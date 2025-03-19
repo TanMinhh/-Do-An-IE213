@@ -34,13 +34,13 @@ app.get('/', (req, res) => {
 app.use("/api/products", productRoute);
 app.use("/api/users", userRoute);
 app.use("/api/analytics", analyticRoute);
-app.use("/api/categories", analyticRoute);
-app.use("/api/messages", analyticRoute);
-app.use("/api/notifications", analyticRoute);
-app.use("/api/orders", analyticRoute);
-app.use("/api/promotions", analyticRoute);
-app.use("/api/reviews", analyticRoute);
-app.use("/api/stores", analyticRoute);
+app.use("/api/categories", categoryRoute);
+app.use("/api/messages", messageRoute);
+app.use("/api/notifications", notificationRoute);
+app.use("/api/orders", orderRoute);
+app.use("/api/promotions", promotionRoute);
+app.use("/api/reviews", reviewRoute);
+app.use("/api/stores", storeRoute);
 
 mongoose.connect("mongodb+srv://hobbeeadmin:lzIpOcBbTtkBUBzc@hobbeedatabase.6asxc.mongodb.net/Node-API?retryWrites=true&w=majority&appName=HobbeeDatabase")
 .then(() => {
