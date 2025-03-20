@@ -11,17 +11,22 @@ const getProducts = async (req, res) => {
 
 const searchProducts = async (req, res) => {
     try {
-        const { tag, categoryId, minPrice, maxPrice, minRating, maxRating } = req.query;
+        const { tags, categoryId, storeId, minPrice, maxPrice, minRating, maxRating } = req.query;
         let filters = {};
 
-        // Tìm kiếm sản phẩm theo tag
-        if (tag) {
-            filters.tags = tag;
+        // Tìm kiếm sản phẩm theo các tag
+        if (tags) {
+            filters.tags = { $in: tags.split(',') };
         }
 
         // Tìm kiếm sản phẩm theo categoryId
         if (categoryId) {
             filters.categoryId = categoryId;
+        }
+
+        // Tìm kiếm sản phẩm theo storeId
+        if (storeId) {
+            filters.storeId = storeId;
         }
 
         // Lọc sản phẩm theo giá
@@ -86,7 +91,6 @@ const deleteProduct = async (req, res) => {
         if(!product){
             return res.status(404).json({message: "Product not found"});
         }
-        const updatedProduct = await Product.findById(id);
         res.status(200).json({message: "Product deleted successfully!"});
     } catch (error) {
         res.status(500).json({message: error.message});
