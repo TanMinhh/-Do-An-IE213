@@ -21,8 +21,10 @@ const promotionRoute = require('./routes/promotion.route.js');
 const reviewRoute = require('./routes/review.route.js');
 const storeRoute = require('./routes/store.route.js');
 const app = express();
+const cors = require('cors');
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
@@ -45,8 +47,8 @@ app.use("/api/stores", storeRoute);
 mongoose.connect("mongodb+srv://hobbeeadmin:lzIpOcBbTtkBUBzc@hobbeedatabase.6asxc.mongodb.net/Node-API?retryWrites=true&w=majority&appName=HobbeeDatabase")
 .then(() => {
     console.log("Connected to database!");
-    app.listen(3000, () => {
-        console.log('Server is running on port 3000');
+    app.listen(80, () => {
+        console.log('Server is running on port 80');
     });
 })
 .catch(() => {
