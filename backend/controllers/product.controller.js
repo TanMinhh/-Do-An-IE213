@@ -2,10 +2,10 @@ const Product = require('../models/product.model.js');
 
 const getProducts = async (req, res) => {
     try {
-        const product = await Product.find({});
-        res.status(200).json(product);
+        const products = await Product.find();
+        res.status(200).json(products);
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -14,29 +14,14 @@ const searchProducts = async (req, res) => {
         const { tags, categoryId, storeId, minPrice, maxPrice, minRating, maxRating } = req.query;
         let filters = {};
 
-        // Tìm kiếm sản phẩm theo các tag
-        if (tags) {
-            filters.tags = { $in: tags.split(',') };
-        }
-
-        // Tìm kiếm sản phẩm theo categoryId
-        if (categoryId) {
-            filters.categoryId = categoryId;
-        }
-
-        // Tìm kiếm sản phẩm theo storeId
-        if (storeId) {
-            filters.storeId = storeId;
-        }
-
-        // Lọc sản phẩm theo giá
+        if (tags) filters.tags = { $in: tags.split(',') };
+        if (categoryId) filters.categoryId = categoryId;
+        if (storeId) filters.storeId = storeId;
         if (minPrice || maxPrice) {
             filters.price = {};
             if (minPrice) filters.price.$gte = parseFloat(minPrice);
             if (maxPrice) filters.price.$lte = parseFloat(maxPrice);
         }
-
-        // Loc sản phẩm theo rating
         if (minRating || maxRating) {
             filters.rating = {};
             if (minRating) filters.rating.$gte = parseFloat(minRating);
@@ -52,48 +37,48 @@ const searchProducts = async (req, res) => {
 
 const getProduct = async (req, res) => {
     try {
-        const { id } = req.params;
-        const product = await Product.findById(id);
+        const product = await Product.findById(req.params.id);
+        if (!product) return res.status(404).json({ message: 'Product not found' });
         res.status(200).json(product);
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
 };
 
-
 const createProduct = async (req, res) => {
     try {
-        const product = await Product.create(req.body);
-        res.status(200).json(product);
+        if (req.user.role !== 'seller') {
+            return res.status(403).json({ message: 'Access denied. Only sellers can create products.' });
+        }
+        const product = new Product({ ...req.body, storeId: req.user.storeId });
+        await product.save();
+        res.status(201).json(product);
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
 };
 
 const updateProduct = async (req, res) => {
     try {
-        const { id } = req.params;
-        const product = await Product.findByIdAndUpdate(id, req.body);
-        if(!product){
-            return res.status(404).json({message: "Product not found"});
-        }
-        const updatedProduct = await Product.findById(id);
-        res.status(200).json(updatedProduct);
+        const product = await Product.findOneAndUpdate(
+            { _id: req.params.id, storeId: req.user.storeId },
+            req.body,
+            { new: true }
+        );
+        if (!product) return res.status(404).json({ message: 'Product not found' });
+        res.status(200).json(product);
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
 };
 
 const deleteProduct = async (req, res) => {
     try {
-        const { id } = req.params;
-        const product = await Product.findByIdAndDelete(id);
-        if(!product){
-            return res.status(404).json({message: "Product not found"});
-        }
-        res.status(200).json({message: "Product deleted successfully!"});
+        const product = await Product.findOneAndDelete({ _id: req.params.id, storeId: req.user.storeId });
+        if (!product) return res.status(404).json({ message: 'Product not found' });
+        res.status(200).json({ message: 'Product deleted successfully!' });
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -103,5 +88,5 @@ module.exports = {
     getProduct,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
 };

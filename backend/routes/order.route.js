@@ -1,18 +1,13 @@
 const express = require('express');
-const Order = require('../models/order.model.js');
 const router = express.Router();
 const {getOrders, getOrder, createOrder, updateOrder, deleteOrder} = require('../controllers/order.controller.js');
+const { authenticateToken } = require('../middleware/auth.middleware.js');
 
-router.get('/', getOrders);
-
-router.get("/:id", getOrder);
-
-router.post("/", createOrder);
-
-// Update a order
-router.put("/:id", updateOrder);
-
-// Delete a order
-router.delete("/:id", deleteOrder);
+// Protected routes
+router.get('/', authenticateToken, getOrders);
+router.get("/:id", authenticateToken, getOrder);
+router.post("/", authenticateToken, createOrder);
+router.put("/:id", authenticateToken, updateOrder); // Update a order
+router.delete("/:id", authenticateToken, deleteOrder); // Delete a order
 
 module.exports = router;

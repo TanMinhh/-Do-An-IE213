@@ -1,18 +1,13 @@
 const express = require('express');
-const Analytic = require('../models/analytic.model.js');
 const router = express.Router();
-const {getAnalytics, getAnalytic, createAnalytic, updateAnalytic, deleteAnalytic} = require('../controllers/analytic.controller.js');
+const { getAnalytics, getAnalytic, createAnalytic, updateAnalytic, deleteAnalytic } = require('../controllers/analytic.controller.js');
+const { authenticateToken, authorizeRoles } = require('../middleware/auth.middleware.js');
 
-router.get('/', getAnalytics);
-
-router.get("/:id", getAnalytic);
-
-router.post("/", createAnalytic);
-
-// Update a analytic
-router.put("/:id", updateAnalytic);
-
-// Delete a analytic
-router.delete("/:id", deleteAnalytic);
+// Protected routes
+router.get('/', authenticateToken, authorizeRoles('admin','seller'), getAnalytics); 
+router.get('/:id', authenticateToken, authorizeRoles('admin','seller'), getAnalytic);
+router.post('/', authenticateToken, authorizeRoles('admin','seller'), createAnalytic); 
+router.put('/:id', authenticateToken, authorizeRoles('admin','seller'), updateAnalytic); // Update an analytic
+router.delete('/:id', authenticateToken, authorizeRoles('admin','seller'), deleteAnalytic); // Delete an analytic
 
 module.exports = router;

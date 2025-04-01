@@ -1,18 +1,15 @@
 const express = require('express');
-const Review = require('../models/review.model.js');
 const router = express.Router();
 const {getReviews, getReview, createReview, updateReview, deleteReview} = require('../controllers/review.controller.js');
+const { authenticateToken } = require('../middleware/auth.middleware.js');
 
+// Public routes
 router.get('/', getReviews);
-
 router.get("/:id", getReview);
 
-router.post("/", createReview);
-
-// Update a review
-router.put("/:id", updateReview);
-
-// Delete a review
-router.delete("/:id", deleteReview);
+// Protected routes
+router.post("/", authenticateToken, createReview);
+router.put("/:id", authenticateToken, updateReview); // Update a review
+router.delete("/:id", authenticateToken, deleteReview); // Delete a review
 
 module.exports = router;

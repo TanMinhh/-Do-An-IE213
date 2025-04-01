@@ -1,18 +1,15 @@
 const express = require('express');
-const Store = require('../models/store.model.js');
 const router = express.Router();
 const {getStores, getStore, createStore, updateStore, deleteStore} = require('../controllers/store.controller.js');
+const { authenticateToken, authorizeRoles } = require('../middleware/auth.middleware.js');
 
+// Public routes
 router.get('/', getStores);
-
 router.get("/:id", getStore);
 
-router.post("/", createStore);
-
-// Update a store
-router.put("/:id", updateStore);
-
-// Delete a store
-router.delete("/:id", deleteStore);
+// Protected routes
+router.post("/", authenticateToken, authorizeRoles('seller'), createStore);
+router.put("/:id", authenticateToken, authorizeRoles('seller'), updateStore); // Update a store
+router.delete("/:id", authenticateToken, authorizeRoles('seller'), deleteStore); // Delete a store
 
 module.exports = router;

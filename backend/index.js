@@ -1,5 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
 const Product = require('./models/product.model.js');
 const User = require('./models/user.model.js');
 const Analytic = require('./models/analytic.model.js');
@@ -21,7 +25,6 @@ const promotionRoute = require('./routes/promotion.route.js');
 const reviewRoute = require('./routes/review.route.js');
 const storeRoute = require('./routes/store.route.js');
 const app = express();
-const cors = require('cors');
 
 // Middleware
 app.use(cors());
@@ -44,13 +47,13 @@ app.use("/api/promotions", promotionRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/stores", storeRoute);
 
-mongoose.connect("mongodb+srv://hobbeeadmin:lzIpOcBbTtkBUBzc@hobbeedatabase.6asxc.mongodb.net/Node-API?retryWrites=true&w=majority&appName=HobbeeDatabase")
+mongoose.connect(process.env.MONGODB_URI)
 .then(() => {
     console.log("Connected to database!");
-    app.listen(80, () => {
-        console.log('Server is running on port 80');
+    app.listen(process.env.PORT, () => {
+        console.log(`Server is running on port ${process.env.PORT}`);
     });
 })
-.catch(() => {
-    console.log("Connection failed!");
-})
+.catch((error) => {
+    console.error("Connection failed!", error);
+});

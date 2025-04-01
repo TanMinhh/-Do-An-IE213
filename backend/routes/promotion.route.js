@@ -1,18 +1,15 @@
 const express = require('express');
-const Promotion = require('../models/promotion.model.js');
 const router = express.Router();
 const {getPromotions, getPromotion, createPromotion, updatePromotion, deletePromotion} = require('../controllers/promotion.controller.js');
+const { authenticateToken, authorizeRoles } = require('../middleware/auth.middleware.js');
 
+// Public routes
 router.get('/', getPromotions);
-
 router.get("/:id", getPromotion);
 
-router.post("/", createPromotion);
-
-// Update a promotion
-router.put("/:id", updatePromotion);
-
-// Delete a promotion
-router.delete("/:id", deletePromotion);
+// Protected routes
+router.post("/", authenticateToken, authorizeRoles('seller'), createPromotion);
+router.put("/:id", authenticateToken, authorizeRoles('seller'), updatePromotion); // Update a promotion
+router.delete("/:id", authenticateToken, authorizeRoles('seller'), deletePromotion); // Delete a promotion
 
 module.exports = router;

@@ -1,18 +1,15 @@
 const express = require('express');
-const Category = require('../models/category.model.js');
 const router = express.Router();
-const {getCategories, getCategory, createCategory, updateCategory, deleteCategory} = require('../controllers/category.controller.js');
+const { getCategories, getCategory, createCategory, updateCategory, deleteCategory } = require('../controllers/category.controller.js');
+const { authenticateToken, authorizeRoles } = require('../middleware/auth.middleware.js');
 
-router.get('/', getCategories);
+// Public routes
+router.get('/', getCategories); 
+router.get('/:id', getCategory); 
 
-router.get("/:id", getCategory);
-
-router.post("/", createCategory);
-
-// Update a category
-router.put("/:id", updateCategory);
-
-// Delete a category
-router.delete("/:id", deleteCategory);
+// Protected routes
+router.post('/', authenticateToken, authorizeRoles('admin'), createCategory); 
+router.put('/:id', authenticateToken, authorizeRoles('admin'), updateCategory); // Update a category
+router.delete('/:id', authenticateToken, authorizeRoles('admin'), deleteCategory); // Delete a category
 
 module.exports = router;
