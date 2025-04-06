@@ -1,1 +1,5 @@
-Cài đặt dependency: npm install express cors mongodb dotenv
+# Cài đặt dependency: 
+## Backend: 
+npm install express cors mongodb dotenv
+## Frontend: 
+npm install 
