@@ -31,8 +31,8 @@ const ProductsList = props => {
         {products && products.length > 0 ? (
           products.map((product) => (
             <Col key={product.index}>
-              <Card style={{ width: '18rem', height: '25rem' }}>
-                <Card.Img src={product.images}/>
+              <Card style={{ width: '18rem', height: '30rem' }}>
+                <Card.Img src={product.images} style={{ width: '18rem', height: '20rem' }}/>
                 <Card.Body>
                   <Card.Title>{product.name}</Card.Title>
                   <Card.Text>

@@ -1,0 +1,28 @@
+GET http://localhost:80/api/products
+Authorization: Beaer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pbmgiLCJpYXQiOjE3NDQ2MzQ1MDEsImV4cCI6MTc0NDYzNDUzMX0.xyjl7TC7gvdZcogUBF1DzWmsxtaovrUy1iNvQ0XEkxo
+
+
+###
+
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+    "username": "minh"
+}
+
+###
+POST http://localhost:8080/api/refreshToken
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pbmgiLCJpYXQiOjE3NDQ2MzQ0NDB9.9PJxQ8J3nyLxOfl8PaiuuVBkfBvc7Dt6HNNg7MN60LY"
+}
+
+###
+POST http://localhost:8080/api/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pbmgiLCJpYXQiOjE3NDQ2MzQ0NDB9.9PJxQ8J3nyLxOfl8PaiuuVBkfBvc7Dt6HNNg7MN60LY"
+}

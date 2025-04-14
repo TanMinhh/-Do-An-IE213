@@ -31,39 +31,57 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 dotenv.config();
 
-// JWT
-function authenToken (req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader.split(' ')[1];
-    if (!token) return res.sendStatus(401);
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
-        console.log(err, data);
-        if (err) return res.sendStatus(403);
-        next();
-    });
-}
-
 app.get('/', (req, res) => {
     res.send("Hello from node API server");
 });
 
+// JWT
+let refreshTokens = [];
+
+app.post('/api/refreshToken', (req, res) => {
+    const refreshToken = req.body.token;
+    if (!refreshToken) return res.sendStatus(401);
+    if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, data) => {
+        console.log(err, data);
+        if (err) return res.sendStatus(403);
+        const accessToken = jwt.sign({ username: data.username }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '30s'});
+        res.json({ accessToken });
+    });
+});
+
+app.post('/api/login', (req, res) => {
+    const data = req.body;
+    console.log({ data });
+    const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '30s'});
+    const refreshToken = jwt.sign(data, process.env.REFRESH_TOKEN_SECRET);
+    refreshTokens.push(refreshToken);
+    res.json({ accessToken, refreshToken });
+});
+
+app.post('/api/logout', (req, res) => {
+    const refreshToken = req.body.token;
+    refreshTokens = refreshTokens.filter(refToken => refToken !== refreshToken);
+    res.sendStatus(200);
+});
+
 // Routes
-app.use("/api/products", authenToken, productRoute);
-app.use("/api/users", authenToken, userRoute);
-app.use("/api/analytics", authenToken, analyticRoute);
-app.use("/api/categories", authenToken, categoryRoute);
-app.use("/api/messages", authenToken, messageRoute);
-app.use("/api/notifications", authenToken, notificationRoute);
-app.use("/api/orders", authenToken, orderRoute);
-app.use("/api/promotions", authenToken, promotionRoute);
-app.use("/api/reviews", authenToken, reviewRoute);
-app.use("/api/stores", authenToken, storeRoute);
+app.use("/api/products", productRoute);
+app.use("/api/users", userRoute);
+app.use("/api/analytics", analyticRoute);
+app.use("/api/categories", categoryRoute);
+app.use("/api/messages", messageRoute);
+app.use("/api/notifications", notificationRoute);
+app.use("/api/orders", orderRoute);
+app.use("/api/promotions", promotionRoute);
+app.use("/api/reviews", reviewRoute);
+app.use("/api/stores", storeRoute);
 
 mongoose.connect("mongodb+srv://hobbeeadmin:lzIpOcBbTtkBUBzc@hobbeedatabase.6asxc.mongodb.net/Node-API?retryWrites=true&w=majority&appName=HobbeeDatabase")
 .then(() => {
     console.log("Connected to database!");
-    app.listen(80, () => {
-        console.log('Server is running on port 80');
+    app.listen(8080, () => {
+        console.log('Server is running on port 8080');
     });
 })
 .catch(() => {
