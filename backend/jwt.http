@@ -26,3 +26,13 @@ Content-Type: application/json
 {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pbmgiLCJpYXQiOjE3NDQ2MzQ0NDB9.9PJxQ8J3nyLxOfl8PaiuuVBkfBvc7Dt6HNNg7MN60LY"
 }
+
+###
+POST http://localhost:80/api/users/createUser
+Content-Type: application/json
+
+{
+    "fullName": "meh",
+    "email": "user.hobbee@gmail.com",
+    "password": "123456789"
+}
