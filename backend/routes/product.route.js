@@ -3,9 +3,9 @@ const Product = require('../models/product.model.js');
 const router = express.Router();
 const {getProducts, getProduct, searchProducts, createProduct, updateProduct, deleteProduct} = require('../controllers/product.controller.js');
 
-router.get('/', getProducts);
+router.get("/", getProducts);
 
-router.get('/search', searchProducts);
+router.get("/search", searchProducts);
 
 router.get("/:id", getProduct);
 

@@ -27,12 +27,12 @@ const ProductSchema = mongoose.Schema(
             trim: true
         },
         price: {
-            type: mongoose.Decimal128,
+            type: mongoose.Number,
             required: true,
             get: v => parseFloat(v)
         },
         salePrice: {
-            type: mongoose.Decimal128,
+            type: mongoose.Number,
             get: v => parseFloat(v)
         },
         quantity: {
@@ -41,11 +41,7 @@ const ProductSchema = mongoose.Schema(
             min: 0,
             default: 0
         },
-        categoryId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Category',
-            required: true
-        },
+        category: String,
         tags: [String],
         images: [String],
         videos: [String],

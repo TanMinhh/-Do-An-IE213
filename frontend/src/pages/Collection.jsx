@@ -55,7 +55,7 @@ const Collection = () => {
 
   useEffect(() => {
     applyFilter();
-  },[category, search, showSearch])
+  },[category, search, showSearch, products])
 
   useEffect(() => {
     sortProduct();
@@ -104,7 +104,7 @@ const Collection = () => {
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6'>
           {
             filterProducts.map((item, index) => (
-              <ProductItem key={index} name={item.name} price={item.price} image={item.image} id={item._id} />
+              <ProductItem key={index} name={item.name} price={item.price} images={item.images} id={item._id} />
             ))
           }
         </div>
