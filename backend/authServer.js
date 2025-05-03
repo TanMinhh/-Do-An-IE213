@@ -22,8 +22,10 @@ const orderRoute = require('./routes/order.route.js');
 const promotionRoute = require('./routes/promotion.route.js');
 const reviewRoute = require('./routes/review.route.js');
 const storeRoute = require('./routes/store.route.js');
+const cartRoute = require('./routes/cart.route.js')
 const app = express();
 const cors = require('cors');
+const connectCloudinary = require('./config/cloudinary.js')
 
 // Middleware
 app.use(cors());
@@ -76,6 +78,7 @@ app.use("/api/orders", orderRoute);
 app.use("/api/promotions", promotionRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/stores", storeRoute);
+app.use("/api/carts", cartRoute);
 
 mongoose.connect("mongodb+srv://hobbeeadmin:lzIpOcBbTtkBUBzc@hobbeedatabase.6asxc.mongodb.net/Node-API?retryWrites=true&w=majority&appName=HobbeeDatabase")
 .then(() => {
@@ -87,3 +90,5 @@ mongoose.connect("mongodb+srv://hobbeeadmin:lzIpOcBbTtkBUBzc@hobbeedatabase.6asx
 .catch(() => {
     console.log("Connection failed!");
 })
+
+connectCloudinary()

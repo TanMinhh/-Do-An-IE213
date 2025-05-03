@@ -1,20 +1,21 @@
 const express = require('express');
 const Product = require('../models/product.model.js');
 const router = express.Router();
-const {getProducts, getProduct, searchProducts, createProduct, updateProduct, deleteProduct} = require('../controllers/product.controller.js');
+const {addProduct, listProducts, getProduct, searchProducts, updateProduct, deleteProduct} = require('../controllers/product.controller.js');
+const upload = require('../middleware/multer.js');
 
-router.get("/", getProducts);
+router.post("/add", upload.fields([{name:'image1',maxCount:1}, {name:'image2',maxCount:1}, {name:'image3',maxCount:1}, {name:'image4',maxCount:1}]), addProduct);
+
+router.get("/list", listProducts);
 
 router.get("/search", searchProducts);
 
 router.get("/:id", getProduct);
 
-router.post("/", createProduct);
-
 // Update a product
 router.put("/:id", updateProduct);
 
 // Delete a product
-router.delete("/:id", deleteProduct);
+router.post("/remove", deleteProduct);
 
 module.exports = router;

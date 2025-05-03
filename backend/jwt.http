@@ -28,11 +28,29 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:80/api/users/createUser
+POST http://localhost:8080/api/users/
 Content-Type: application/json
 
 {
     "fullName": "meh",
     "email": "user.hobbee@gmail.com",
     "password": "123456789"
+}
+
+###
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+    "email": "user.hobbee@gmail.com",
+    "password": "123456789"
+}
+
+###
+POST http://localhost:8080/api/users/admin
+Content-Type: application/json
+
+{
+    "email": "admin@hobbee.com",
+    "password": "hobbee123"
 }

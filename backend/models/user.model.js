@@ -26,6 +26,10 @@ const UserSchema = mongoose.Schema(
             required: true,
             default: 'buyer'
         },
+        cartData: {
+            type: Object,
+            default: {}
+        },
         addresses: [{
             addressLine: {
                 type: String,

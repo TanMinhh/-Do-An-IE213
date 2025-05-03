@@ -5,7 +5,7 @@ const ProductSchema = mongoose.Schema(
         storeId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Store',
-            required: true
+            required: false
         },
         name: {
             type: String,
@@ -14,7 +14,7 @@ const ProductSchema = mongoose.Schema(
         },
         slug: {
             type: String,
-            required: true,
+            required: false,
             unique: true,
             trim: true
         },

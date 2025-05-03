@@ -1,18 +1,22 @@
 const express = require('express');
 const Order = require('../models/order.model.js');
 const router = express.Router();
-const {getOrders, getOrder, createOrder, updateOrder, deleteOrder} = require('../controllers/order.controller.js');
+const {placeOrder, placeOrderStripe, verifyStripe, allOrders, userOrders, updateStatus, deleteOrder} = require('../controllers/order.controller.js');
+const adminAuth = require('../middleware/adminAuth.js')
+const authUser = require('../middleware/auth.js')
 
-router.get('/', getOrders);
+router.post("/place", authUser, placeOrder);
 
-router.get("/:id", getOrder);
+router.post("/stripe", authUser, placeOrderStripe);
 
-router.post("/", createOrder);
+router.post("/verifyStripe", authUser, verifyStripe);
 
-// Update a order
-router.put("/:id", updateOrder);
+router.post("/list", adminAuth, allOrders);
 
-// Delete a order
+router.post("/status", adminAuth, updateStatus);
+
+router.post("/orders", authUser, userOrders);
+
 router.delete("/:id", deleteOrder);
 
 module.exports = router;
