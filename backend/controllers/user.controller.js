@@ -44,7 +44,8 @@ const createUser = async (req, res) => {
         const newUser = new User({
             fullName,
             email,
-            password:hashedPassword
+            password:hashedPassword,
+            role: req.body.role || 'buyer'
         })
         const user = await newUser.save()
         const token = createToken(user._id)
