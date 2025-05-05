@@ -117,11 +117,15 @@ const updateProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
     try {
-        await Product.findByIdAndDelete(req.body.id)
-        res.json({success:true, message:"Product deleted!"})
+        const { id } = req.params;
+        const product = await Product.findByIdAndDelete(id);
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found!" });
+        }
+        res.json({ success: true, message: "Product deleted!" });
     } catch (error) {
-        console.log(error)
-        res.json({success:false, message:error.message})
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
 };
 

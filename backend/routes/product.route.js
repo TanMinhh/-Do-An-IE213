@@ -17,6 +17,10 @@ router.get("/:id", getProduct);
 router.put("/:id", updateProduct);
 
 // Delete a product
+<<<<<<< HEAD
 router.post("/remove", adminAuth, deleteProduct);
+=======
+router.delete("/remove/:id", deleteProduct);
+>>>>>>> 5e63dac01a37d4cf69d568001a007f2591e18d43
 
 module.exports = router;
