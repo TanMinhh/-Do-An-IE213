@@ -86,11 +86,11 @@ const Add = ({token}) => {
         <div>
           <p className='mb-2'>Product category</p>
           <select className='w-full px-3 py-2' onChange={(e)=>setCategory(e.target.value)}>
-            <option value="Trang sức">Trang sức</option>
-            <option value="Gốm Sứ">Gốm Sứ</option>
-            <option value="Sơn Mài">Sơn Mài</option>
-            <option value="Đồ Gỗ">Đồ Gỗ</option>
-            <option value="Tranh Thêu">Tranh Thêu</option>
+            <option value='Trang sức'>Trang sức</option>
+            <option value='Gốm Sứ'>Gốm Sứ</option>
+            <option value='Sơn Mài'>Sơn Mài</option>
+            <option value='Đồ Gỗ'>Đồ Gỗ</option>
+            <option value='Tranh Thêu'>Tranh Thêu</option>
           </select>
         </div>
 
