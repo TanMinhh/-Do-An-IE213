@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const Orders = () => {
 
-  const {backendUrl, token, currency} = useContext(ShopContext);
+  const {backendUrl, token, currency, delivery_fee} = useContext(ShopContext);
 
   const [orderData, setOrderData] = useState([])
 
@@ -52,8 +52,8 @@ const Orders = () => {
                 <div>
                   <p className='sm:text-base font-medium'>{item.name}</p>
                   <div className='flex items-center gap-3 mt-1 text-base text-gray-700'>
-                    <p className='text-lg'>{item.price} {currency}</p>
-                    <p>Quantity: 1</p>
+                    <p className='text-lg'>{item.price * item.quantity + delivery_fee} {currency}</p>
+                    <p>Quantity: {item.quantity} </p>
                   </div>
                   <p className='mt-1'>Date: <span className='text-gray-400'>{new Date(item.date).toDateString()}</span></p>
                   <p className='mt-1'>Payment: <span className='text-gray-400'>{item.paymentMethod}</span></p>
