@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "serve": "node server.js",
     "server": "nodemon server.js",
     "auth": "nodemon authServer.js"
@@ -28,6 +28,8 @@
     "validator": "^13.15.0"
   },
   "devDependencies": {
+    "chai": "^5.2.0",
+    "mocha": "^11.2.2",
     "nodemon": "^3.1.9"
   }
 }
